@@ -19,7 +19,7 @@ type GLTFResult =  {
 
 
 export default function Model (props:any) {
-  const { nodes, materials } = useGLTF('models/portfolio39.glb') as unknown as GLTFResult;
+  const { nodes, materials } = useGLTF('models/portfolio55.gltf') as unknown as GLTFResult;
   const texture = useTexture('texture/wall2.jpg');
   const pillowtexture = useTexture('texture/pillow.jpg');
   const tabletexture = useTexture('texture/table.jpg');
@@ -1071,4 +1071,4 @@ export default function Model (props:any) {
     </group>
   )
 }
-useGLTF.preload('models/portfolio39.glb')
+useGLTF.preload('models/portfolio55.gltf')

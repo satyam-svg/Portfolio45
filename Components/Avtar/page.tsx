@@ -16,7 +16,7 @@ export default function Avatar(props: AvatarProps) {
   const group = useRef<THREE.Group>(null);
 
   // Load the GLTF model
-  const { nodes, materials } = useGLTF('models/6622ba3cae985a21aa64ad60.glb') as any;
+  const { nodes, materials } = useGLTF('models/avtar.gltf') as any;
 
   // Load the FBX animations
   const typingFBX = useFBX('animations/Typing.fbx') as any;
@@ -150,4 +150,4 @@ export default function Avatar(props: AvatarProps) {
 }
 
 // Preload the GLTF model
-useGLTF.preload('models/6622ba3cae985a21aa64ad60.glb');
+useGLTF.preload('models/avtar.gltf');
