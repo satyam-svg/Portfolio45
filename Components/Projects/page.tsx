@@ -1,12 +1,27 @@
-import { Image, Text,Html } from "@react-three/drei";
+import React, { useEffect, useRef } from "react";
+import { Image, Text } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
-
 import { motion } from "framer-motion-3d";
 import { atom, useAtom } from "jotai";
-import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
-export const projects = [
+// Define the type for a project
+interface ProjectType {
+  title: string;
+  url: string;
+  image: string;
+  description: string;
+}
+
+// Define the type for the props that the Project component will receive
+interface ProjectProps {
+  project: ProjectType;
+  highlighted: boolean;
+}
+
+// List of projects
+export const projects: ProjectType[] = [
   {
     title: "Wawatmos",
     url: "https://r3f-wawatmos-final.vercel.app/",
@@ -39,10 +54,9 @@ export const projects = [
   },
 ];
 
-const Project = (props) => {
-  const { project, highlighted } = props;
-
-  const background = useRef();
+// Project component
+const Project: React.FC<ProjectProps> = ({ project, highlighted }) => {
+  const background = useRef<THREE.Mesh>(null);
   const bgOpacity = useMotionValue(0.4);
 
   useEffect(() => {
@@ -50,30 +64,38 @@ const Project = (props) => {
   }, [highlighted]);
 
   useFrame(() => {
-    background.current.material.opacity = bgOpacity.get();
+    if (background.current) {
+      const material = background.current.material;
+      if (Array.isArray(material)) {
+        material.forEach((mat) => {
+          mat.opacity = bgOpacity.get();
+        });
+      } else {
+        (material as THREE.Material).opacity = bgOpacity.get();
+      }
+    }
   });
 
   return (
-    <group {...props}>
+    <group>
       <mesh
         position-z={-0.001}
         onClick={() => window.open(project.url, "_blank")}
-        
         ref={background}
       >
         <planeGeometry args={[2.2, 2]} />
         <meshBasicMaterial color="black" transparent opacity={0.4} />
       </mesh>
       <Image
-        scale={[2, 1.2, 1]}
+        scale={[2, 1.2]}
         url={project.image}
         toneMapped={false}
-        position-y={0.3}
+        position={[0, 0.3, 0]} 
       />
       <Text
         maxWidth={2}
-        anchorX={"left"}
-        anchorY={"top"}
+        anchorX="left"
+        anchorY="top"
         fontSize={0.2}
         position={[-1, -0.4, 0]}
       >
@@ -92,9 +114,11 @@ const Project = (props) => {
   );
 };
 
+// Atom for managing the current project
 export const currentProjectAtom = atom(Math.floor(projects.length / 2));
 
-export const Projects = () => {
+// Projects component
+export const Projects: React.FC = () => {
   const { viewport } = useThree();
   const [currentProject] = useAtom(currentProjectAtom);
 
@@ -102,7 +126,7 @@ export const Projects = () => {
     <group position-y={-viewport.height * 2 + 1}>
       {projects.map((project, index) => (
         <motion.group
-          key={"project_" + index}
+          key={`project_${index}`}
           position={[index * 2.5, 0, -3]}
           animate={{
             x: 0 + (index - currentProject) * 2.5,
@@ -118,6 +142,5 @@ export const Projects = () => {
     </group>
   );
 };
-
 
 export default Projects;
