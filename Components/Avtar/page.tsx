@@ -15,20 +15,23 @@ export default function Avatar(props: AvatarProps) {
   const { animation } = props;
   const group = useRef<THREE.Group>(null);
 
+  // Load the GLTF model
   const { nodes, materials } = useGLTF('models/6622ba3cae985a21aa64ad60.glb') as any;
 
- 
-  const { animations: typingAnimation } = useFBX('animations/Typing.fbx') as any;
-  const { animations: fallingAnimation } = useFBX('animations/Falling.fbx') as any;
-  const { animations: standingAnimation } = useFBX('animations/Standing.fbx') as any;
+  // Load the FBX animations
+  const typingFBX = useFBX('animations/Typing.fbx') as any;
+  const fallingFBX = useFBX('animations/Falling.fbx') as any;
+  const standingFBX = useFBX('animations/Standing.fbx') as any;
 
-  typingAnimation[0].name = 'Typing';
-  fallingAnimation[0].name = 'Falling';
-  standingAnimation[0].name = 'Standing';
+  // Ensure animation names are set
+  typingFBX.animations[0].name = 'Typing';
+  fallingFBX.animations[0].name = 'Falling';
+  standingFBX.animations[0].name = 'Standing';
 
-  // Setup animations
-  const { actions } = useAnimations([typingAnimation[0], fallingAnimation[0], standingAnimation[0]], group);
+  // Setup animations using useAnimations hook
+  const { actions } = useAnimations([typingFBX.animations[0], fallingFBX.animations[0], standingFBX.animations[0]], group);
 
+  // Update frame logic
   useFrame((state) => {
     const { mouse, camera } = state;
     if (group.current) {
@@ -48,15 +51,17 @@ export default function Avatar(props: AvatarProps) {
     }
   });
 
+  // Handle animation changes
   useEffect(() => {
     if (actions && actions[animation]) {
       actions[animation]?.reset().fadeIn(0.5).play();
       return () => {
-        actions[animation]?.reset().fadeOut(0.5); // Using optional chaining to safely access reset and fadeOut
+        actions[animation]?.fadeOut(0.5).reset();
       };
     }
   }, [animation, actions]);
 
+  // Handle wireframe material update
   useEffect(() => {
     if (materials) {
       Object.values(materials).forEach((material: any) => {
@@ -144,4 +149,5 @@ export default function Avatar(props: AvatarProps) {
   );
 }
 
+// Preload the GLTF model
 useGLTF.preload('models/6622ba3cae985a21aa64ad60.glb');
