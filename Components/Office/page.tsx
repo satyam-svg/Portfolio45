@@ -4,6 +4,10 @@ import {  useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+
+
+
+
 type GLTFResult = GLTF & {
   nodes: {
     [key: string]: THREE.Mesh;
@@ -12,6 +16,10 @@ type GLTFResult = GLTF & {
     [key: string]: THREE.Material;
   };
 };
+
+interface OfficeProps {
+  section: number; 
+}
 
 const Model: React.FC = (props) => {
   const { nodes, materials } = useGLTF('models/portfolio39.glb') as unknown as GLTFResult;
