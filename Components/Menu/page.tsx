@@ -11,11 +11,21 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ onSectionChange, menuOpened, setMenuOpened }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio('/sound/developer.mp3'));
-  const [stopSound] = useState(new Audio('/sound/stopping.mp3'));
-  const [playSound] = useState(new Audio('/sound/Playing.mp3'));
-  const [menu] = useState(new Audio('/sound/Menu.mp3'));
-  const [closemenu] = useState(new Audio('/sound/Closing.mp3'));
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [stopSound, setStopSound] = useState<HTMLAudioElement | null>(null);
+  const [playSound, setPlaySound] = useState<HTMLAudioElement | null>(null);
+  const [menuSound, setMenuSound] = useState<HTMLAudioElement | null>(null);
+  const [closeMenuSound, setCloseMenuSound] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setAudio(new Audio('/sound/developer.mp3'));
+      setStopSound(new Audio('/sound/stopping.mp3'));
+      setPlaySound(new Audio('/sound/Playing.mp3'));
+      setMenuSound(new Audio('/sound/Menu.mp3'));
+      setCloseMenuSound(new Audio('/sound/Closing.mp3'));
+    }
+  }, []);
 
   useEffect(() => {
     const playButton = document.getElementById('play');
@@ -23,41 +33,35 @@ const Page: React.FC<PageProps> = ({ onSectionChange, menuOpened, setMenuOpened 
 
     const togglePlayPause = () => {
       if (isPlaying) {
-        audio.pause();
-        stopSound.play(); // Play the stopping sound
+        audio?.pause();
+        stopSound?.play();
       } else {
-        playSound.play();
+        playSound?.play();
         setTimeout(() => {
-          audio.play();
+          audio?.play();
         }, 1200);
-
-        stopSound.pause(); // Pause the stopping sound if it's playing
-        stopSound.currentTime = 0; // Reset stopping sound to start if needed
+        stopSound?.pause();
+        stopSound && (stopSound.currentTime = 0);
       }
       setIsPlaying(!isPlaying);
     };
 
-    playButton?.addEventListener('click', togglePlayPause);
-    menuButton?.addEventListener('click', () => {
-      if (!menuOpened) {
-        menu.play();
+    const handleMenuClick = () => {
+      if (menuOpened) {
+        closeMenuSound?.play();
       } else {
-        closemenu.play();
+        menuSound?.play();
       }
-    });
+    };
 
-    // Cleanup event listener on component unmount
+    playButton?.addEventListener('click', togglePlayPause);
+    menuButton?.addEventListener('click', handleMenuClick);
+
     return () => {
       playButton?.removeEventListener('click', togglePlayPause);
-      menuButton?.removeEventListener('click', () => {
-        if (!menuOpened) {
-          menu.play();
-        } else {
-          closemenu.play();
-        }
-      });
+      menuButton?.removeEventListener('click', handleMenuClick);
     };
-  }, [audio, isPlaying, stopSound, playSound, menu, closemenu, menuOpened]);
+  }, [audio, isPlaying, stopSound, playSound, menuSound, closeMenuSound, menuOpened]);
 
   return (
     <>
@@ -69,51 +73,18 @@ const Page: React.FC<PageProps> = ({ onSectionChange, menuOpened, setMenuOpened 
           top: '3rem',
           left: '1rem',
           padding: '0.75rem',
-          backgroundColor: isPlaying ? 'white' : 'grey', // Set background color based on isPlaying state
+          backgroundColor: isPlaying ? 'white' : 'grey',
           width: '2.75rem',
           height: '2.75rem',
           borderRadius: '50%',
         }}
       >
         {isPlaying ? (
-          <Image src={sound} alt="loading-sound" width={24} height={24} />
+          <Image src={sound} alt="playing-sound" width={24} height={24} />
         ) : (
-          <Image src={Mute} alt="loading-sound" width={24} height={24} />
+          <Image src={Mute} alt="muted-sound" width={24} height={24} />
         )}
       </button>
-
-      <div
-        style={{
-          zIndex: 10,
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#fff',
-          transition: 'all 0.3s',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          width: menuOpened ? '20rem' : '0',
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'start',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            gap: '1.5rem',
-            padding: '2rem',
-          }}
-        >
-          <MenuButton label="About" onClick={() => onSectionChange(0)} />
-          <MenuButton label="Skills" onClick={() => onSectionChange(1)} />
-          <MenuButton label="Projects" onClick={() => onSectionChange(2)} />
-          <MenuButton label="Contact" onClick={() => onSectionChange(3)} />
-        </div>
-      </div>
 
       <button
         onClick={() => setMenuOpened(!menuOpened)}
