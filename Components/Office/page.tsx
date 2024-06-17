@@ -2,13 +2,13 @@ import React, { useRef } from 'react';
 import { useGLTF, useTexture, useVideoTexture } from '@react-three/drei';
 import {  useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
 
 
 
-type GLTFResult = GLTF & {
+
+type GLTFResult =  {
   nodes: {
     [key: string]: THREE.Mesh;
   };
@@ -17,11 +17,8 @@ type GLTFResult = GLTF & {
   };
 };
 
-interface OfficeProps {
-  section: number; 
-}
 
-const Model: React.FC = (props) => {
+export default function Model (props:any) {
   const { nodes, materials } = useGLTF('models/portfolio39.glb') as unknown as GLTFResult;
   const texture = useTexture('texture/wall2.jpg');
   const pillowtexture = useTexture('texture/pillow.jpg');
@@ -1074,6 +1071,4 @@ const Model: React.FC = (props) => {
     </group>
   )
 }
-
 useGLTF.preload('models/portfolio39.glb')
-export default Model;
