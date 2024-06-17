@@ -1,0 +1,36 @@
+{
+  "name": "my-next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@formspree/react": "^2.5.1",
+    "@react-three/drei": "^9.105.6",
+    "@react-three/fiber": "^8.16.4",
+    "@types/three": "^0.165.0",
+    "framer-motion": "^11.1.9",
+    "framer-motion-3d": "^11.1.9",
+    "gsap": "^3.12.5",
+    "jotai": "^2.8.3",
+    "leva": "^0.9.35",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "vite": "^5.2.11"
+  }
+}
