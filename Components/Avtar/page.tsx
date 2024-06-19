@@ -83,7 +83,7 @@ export default function Avatar(props: AvatarProps) {
           morphTargetDictionary={nodes.EyeLeft.morphTargetDictionary}
           morphTargetInfluences={nodes.EyeLeft.morphTargetInfluences}
         >
-          <pointLight intensity={1.2} color="yellow" />
+          {/* <pointLight intensity={1.2} color="yellow" /> */}
         </skinnedMesh>
         <skinnedMesh
           frustumCulled={false}
@@ -94,7 +94,7 @@ export default function Avatar(props: AvatarProps) {
           morphTargetDictionary={nodes.EyeRight.morphTargetDictionary}
           morphTargetInfluences={nodes.EyeRight.morphTargetInfluences}
         >
-          <pointLight intensity={1.2} color="yellow" />
+          {/* <pointLight intensity={1.2} color="yellow" /> */}
         </skinnedMesh>
         <skinnedMesh
           frustumCulled={false}

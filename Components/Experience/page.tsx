@@ -119,6 +119,7 @@ const Home: React.FC<HomeProps> = ({ menuOpened }) => {
         rotation-y={-Math.PI / 4}
         animate={{ y: section === 0 ? 0 : -1 }}
       >
+        <ambientLight intensity={1}/>
         <Office  />
         <group
           ref={characterContainerAboutRef}
