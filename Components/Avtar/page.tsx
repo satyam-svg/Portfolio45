@@ -19,9 +19,9 @@ export default function Avatar(props: AvatarProps) {
   const { nodes, materials } = useGLTF('models/avtar.gltf') as any;
 
   // Load the FBX animations
-  const typingFBX = useFBX('animations/Typing.fbx') as any;
-  const fallingFBX = useFBX('animations/Falling.fbx') as any;
-  const standingFBX = useFBX('animations/Standing.fbx') as any;
+  const typingFBX = useFBX('animations/Typing1.fbx') as any;
+  const fallingFBX = useFBX('animations/Falling1.fbx') as any;
+  const standingFBX = useFBX('animations/Standing1.fbx') as any;
 
   // Ensure animation names are set
   typingFBX.animations[0].name = 'Typing';
