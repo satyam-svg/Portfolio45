@@ -19,17 +19,17 @@ export default function Avatar(props: AvatarProps) {
   const { nodes, materials } = useGLTF('models/avtar.gltf') as any;
 
   // Load the FBX animations
-  const typingFBX = useFBX('animations/Typing1.fbx') as any;
-  const fallingFBX = useFBX('animations/Falling1.fbx') as any;
-  const standingFBX = useFBX('animations/Standing1.fbx') as any;
+  const typingFBX = useFBX('animations/Typing45.fbx') as any;
+  // const fallingFBX = useFBX('animations/Falling1.fbx') as any;
+  // const standingFBX = useFBX('animations/Standing1.fbx') as any;
 
   // Ensure animation names are set
   typingFBX.animations[0].name = 'Typing';
-  fallingFBX.animations[0].name = 'Falling';
-  standingFBX.animations[0].name = 'Standing';
+  // fallingFBX.animations[0].name = 'Falling';
+  // standingFBX.animations[0].name = 'Standing';
 
   // Setup animations using useAnimations hook
-  const { actions } = useAnimations([typingFBX.animations[0], fallingFBX.animations[0], standingFBX.animations[0]], group);
+  const { actions } = useAnimations([typingFBX.animations[0]], group);
 
   // Update frame logic
   useFrame((state) => {
